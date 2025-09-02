@@ -3,12 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Surya Mathivanan - Portfolio</title>
+    <title>Surya's Portfolio</title>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
+    <link href="assets/iconimg.ico" rel="icon">
+    <link href="assets/iconimg.ico" rel="apple-touch-icon">
   </head>
   <body>
     <div id="resume-popup" class="resume-popup" style="display: none">
@@ -97,7 +99,7 @@
 
       <!-- Main Grid -->
       <div class="main-grid" id="mainGrid">
-        <div class="grid-item profile-image" data-section="about">
+        <div class="grid-item profile-imageee" data-section="about">
           <img src="assets/profilephoto.jpg" alt="" />
         </div>
         <div class="grid-item about" data-section="about">
@@ -135,13 +137,13 @@
       <!-- Expanded Views -->
       <div class="expanded-view" id="aboutView">
         <div class="expanded-content">
-          <h1 class="section-title">About Me:</h1>
+          <h1 class="section-title">About Me</h1>
           <div class="about-content">
             <div>
               <img
                 src="assets/profilephoto.jpg"
                 alt="Surya Mathivanan"
-                class="profile-image"
+                class="profile-imagee"
               />
             </div>
             <div class="about-text">
@@ -187,14 +189,12 @@
               </p>
             </div>
           </div>
-          <!-- <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:share:7356607601146548225?collapsed=1" height="200" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe> -->
-          <!-- <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:share:7356607601146548225?collapsed=1" height="200" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe> -->
         </div>
       </div>
 
       <div class="expanded-view" id="projectsView">
         <div class="expanded-content">
-          <h1 class="section-title">Projects:</h1>
+          <h1 class="section-title">Projects</h1>
           <div class="projects-grid">
             <div class="project-card">
               <img
@@ -237,6 +237,95 @@
                 title="Embedded post"
               ></iframe>
             </div>
+
+            <div class="project-card">
+              <img
+                src="assets/image.png"
+                alt="GPay Reward Application"
+                class="project-image"
+              />
+              <div class="project-info">
+                <h3 class="project-title">Spotify Dashboard</h3>
+                <p class="project-description">
+                  This is a self-interest project I created to explore and learn Power BI dashboarding.
+I used a publicly available Spotify dataset (link below) to analyze songs, artists, and their performance across platforms.
+The main goal of this project was to practice different types of Power BI charts and understand how to build an interactive music analytics dashboard.
+                </p>
+                <div class="project-links">
+                  <a
+                    href="https://github.com/Surya-Mathivanan/Spotify-Dashboard-Power-BI"
+                    class="project-link"
+                    target="_blank"
+                  >
+                    <i class="fab fa-github"></i> GitHub
+                  </a>
+                  <!-- <a href="#" class="project-link">
+                 <i class="fas fa-external-link-alt"></i> Live Demo
+                </a> -->
+                </div>
+              </div>
+            </div>
+
+
+            <div class="project-card">
+              <img
+                src="assets/image.png"
+                alt="GPay Reward Application"
+                class="project-image"
+              />
+              <div class="project-info">
+                <h3 class="project-title">Customer Personality Analysis</h3>
+                <p class="project-description">
+                  This project visualizes customer demographic and spending behavior using the Customer Personality Analysis dataset from Kaggle. The dashboard helps identify key patterns in income, education, marital status, complaints, purchases, and product preferences.
+                </p>
+                <div class="project-links">
+                  <a
+                    href="https://github.com/Surya-Mathivanan/Customer-Personality-Analysis"
+                    class="project-link"
+                    target="_blank"
+                  >
+                    <i class="fab fa-github"></i> GitHub
+                  </a>
+                  <!-- <a href="#" class="project-link">
+                 <i class="fas fa-external-link-alt"></i> Live Demo
+                </a> -->
+                </div>
+              </div>
+            </div>
+
+
+                        <div class="project-card">
+              <img
+                src="assets/image.png"
+                alt="GPay Reward Application"
+                class="project-image"
+              />
+              <div class="project-info">
+                <h3 class="project-title">AI Assistant Chat Application</h3>
+                <p class="project-description">
+                  A streamlined, secure AI chat application featuring Google's Gemini AI. This project provides a minimal yet powerful implementation of:
+
+🔐 Secure Google Sign-In authentication
+💬 Protected AI Assistant chat interface
+🚪 User session management with logout functionality
+🤖 Integration with Google's Gemini AI
+🎯 Clean, focused user experience
+                </p>
+                <div class="project-links">
+                  <a
+                    href="https://github.com/Surya-Mathivanan/AI_ChatBot"
+                    class="project-link"
+                    target="_blank"
+                  >
+                    <i class="fab fa-github"></i> GitHub
+                  </a>
+                  <a href="https://ai-chat-bot-sigma-ten.vercel.app/signin" class="project-link">
+                 <i class="fas fa-external-link-alt"></i> Live Demo
+                </a>
+                </div>
+              </div>
+            </div>
+
 
             <div class="project-card">
               <img
@@ -469,7 +558,7 @@
 
       <div class="expanded-view" id="skillsView">
         <div class="expanded-content">
-          <h1 class="section-title">Skills:</h1>
+          <h1 class="section-title">Skills</h1>
           <div class="skills-grid">
             <!-- Languages -->
             <div class="skill-category">
@@ -716,7 +805,7 @@
 
       <div class="expanded-view" id="educationView">
         <div class="expanded-content">
-          <h1 class="section-title">Education:</h1>
+          <h1 class="section-title">Education</h1>
           <div class="education-timeline">
             <div class="education-item">
               <div class="education-content">
@@ -799,7 +888,7 @@
 
       <div class="expanded-view" id="contactView">
         <div class="expanded-content">
-          <h1 class="section-title">Contact Me:</h1>
+          <h1 class="section-title">Contact Me</h1>
           <div class="contact-content">
             <!-- <div class="contact-email">
                         <a href="mailto:surya.mathivanan@gmail.com" class="email-link">

@@ -394,6 +394,264 @@ body {
   }
 }
 
+/* =========================================================================================================== */
+/* GitHub Spark App Theme - About Section */
+.expanded-view {
+  background: #0d1117;
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+  color: #e6edf3;
+  line-height: 1.6;
+}
+
+.expanded-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 8px 24px rgba(1, 4, 9, 0.15);
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin: 0 0 2rem 0;
+  background: linear-gradient(135deg, #58a6ff, #79c0ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  letter-spacing: -0.02em;
+}
+
+.about-content {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+
+
+
+/* ======================================================================================================================== */
+
+
+
+
+
+
+
+
+/* .profile-imageee {
+  width: 280px;
+  height: 220px;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 3px solid #21262d;
+  box-shadow: 0 8px 24px rgba(1, 4, 9, 0.3);
+  transition: all 0.3s ease;
+  filter: grayscale(20%);
+} */
+
+
+
+
+.profile-imageee img {
+  width: 145%;
+  height: 145%;
+  object-fit: cover;
+  border-radius: 30px;
+  border: 2px solid #21262d;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: grayscale(15%) brightness(0.95);
+  position: relative;
+  z-index: 2;
+}
+
+
+
+
+
+.profile-image {
+  width: 280px;
+  height: 280px;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 3px solid #21262d;
+  box-shadow: 0 8px 24px rgba(1, 4, 9, 0.3);
+  transition: all 0.3s ease;
+  filter: grayscale(20%);
+}
+.profile-imagee {
+  width: 280px;
+  height: 580px;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 3px solid #21262d;
+  box-shadow: 0 8px 24px rgba(1, 4, 9, 0.3);
+  transition: all 0.3s ease;
+  filter: grayscale(20%);
+}
+
+.profile-image:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(88, 166, 255, 0.15);
+  border-color: #58a6ff;
+  filter: grayscale(0%);
+}
+
+.about-text {
+  flex: 1;
+}
+
+.about-text p {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: #c9d1d9;
+  text-align: justify;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.about-text p:last-child {
+  margin-bottom: 0;
+}
+
+.about-text strong {
+  color: #f0f6fc;
+  font-weight: 600;
+}
+
+.about-text p strong:first-child {
+  color: #58a6ff;
+  font-size: 1.2em;
+  margin-right: 0.5rem;
+}
+
+.about-text a {
+  color: #58a6ff;
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.about-text a:hover {
+  background: rgba(88, 166, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.about-text a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 50%;
+  background: #58a6ff;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.about-text a:hover::after {
+  width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .expanded-view {
+    padding: 1rem;
+  }
+  
+  .expanded-content {
+    padding: 1.5rem;
+  }
+  
+  .about-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    text-align: center;
+  }
+  
+  .profile-image {
+    width: 220px;
+    height: 220px;
+    margin: 0 auto;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .about-text {
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 1.8rem;
+  }
+  
+  .profile-image {
+    width: 180px;
+    height: 180px;
+  }
+    .profile-imagee {
+    width: 280px;
+    height: 180px;
+  }
+  
+  .about-text p {
+    font-size: 1rem;
+  }
+}
+
+/* Subtle animations */
+.expanded-content {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom scrollbar to match theme */
+.expanded-view::-webkit-scrollbar {
+  width: 8px;
+}
+
+.expanded-view::-webkit-scrollbar-track {
+  background: #0d1117;
+}
+
+.expanded-view::-webkit-scrollbar-thumb {
+  background: #30363d;
+  border-radius: 4px;
+}
+
+.expanded-view::-webkit-scrollbar-thumb:hover {
+  background: #484f58;
+}
+
+
+
+
+
+
 .section-title {
   font-size: clamp(2rem, 5vw, 3rem); /* Responsive font size */
   margin-bottom: 30px;
@@ -572,10 +830,15 @@ body {
   box-shadow: 0 5px 15px rgba(88, 166, 255, 0.3);
 }
 
-/* Education Section */
+
+/* =========================================================================================================/ */
+
+
+/* Education Section - Enhanced with Mobile Responsiveness */
 .education-timeline {
   position: relative;
   margin-top: 30px;
+  padding: 0 15px;
 }
 
 .education-timeline::before {
@@ -604,6 +867,7 @@ body {
   background: var(--accent-color);
   border-radius: 50%;
   box-shadow: 0 0 0 4px var(--primary-bg);
+  z-index: 2;
 }
 
 .education-content {
@@ -611,6 +875,7 @@ body {
   padding: 25px;
   border-radius: var(--border-radius-base);
   border: 1px solid var(--border-color);
+  position: relative;
 }
 
 .education-year {
@@ -622,11 +887,220 @@ body {
 .education-title {
   font-size: 1.3rem;
   margin: 5px 0;
+  line-height: 1.4;
 }
 
 .education-institution {
   color: var(--text-secondary);
   margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+/* Tablet View - Medium screens (768px - 1024px) */
+@media (max-width: 1024px) {
+  .education-timeline {
+    margin-top: 25px;
+    padding: 0 10px;
+  }
+  
+  .education-item {
+    padding-left: 70px;
+    margin-bottom: 35px;
+  }
+  
+  .education-content {
+    padding: 20px;
+  }
+  
+  .education-title {
+    font-size: 1.2rem;
+  }
+}
+
+/* Mobile View - Small screens (max-width: 768px) */
+@media (max-width: 768px) {
+  .education-timeline {
+    margin-top: 20px;
+    padding: 0 5px;
+  }
+  
+  .education-timeline::before {
+    left: 20px;
+  }
+  
+  .education-item {
+    padding-left: 50px;
+    margin-bottom: 30px;
+  }
+  
+  .education-item::before {
+    left: 14px;
+    width: 12px;
+    height: 12px;
+    box-shadow: 0 0 0 3px var(--primary-bg);
+  }
+  
+  .education-content {
+    padding: 18px 15px;
+  }
+  
+  .education-year {
+    font-size: 0.85rem;
+  }
+  
+  .education-title {
+    font-size: 1.1rem;
+    margin: 8px 0;
+  }
+  
+  .education-institution {
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+  }
+}
+
+/* Extra Small Mobile View (max-width: 480px) */
+@media (max-width: 480px) {
+  .education-timeline {
+    margin-top: 15px;
+    padding: 0;
+  }
+  
+  .education-timeline::before {
+    left: 15px;
+    width: 1.5px;
+  }
+  
+  .education-item {
+    padding-left: 40px;
+    margin-bottom: 25px;
+  }
+  
+  .education-item::before {
+    left: 9px;
+    width: 10px;
+    height: 10px;
+    box-shadow: 0 0 0 2px var(--primary-bg);
+  }
+  
+  .education-content {
+    padding: 15px 12px;
+    border-radius: 8px;
+  }
+  
+  .education-year {
+    font-size: 0.8rem;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .education-title {
+    font-size: 1rem;
+    margin: 5px 0 8px 0;
+    line-height: 1.3;
+  }
+  
+  .education-institution {
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+}
+
+/* Ultra Small Screens (max-width: 320px) */
+@media (max-width: 320px) {
+  .education-timeline::before {
+    left: 12px;
+  }
+  
+  .education-item {
+    padding-left: 35px;
+    margin-bottom: 20px;
+  }
+  
+  .education-item::before {
+    left: 7px;
+    width: 8px;
+    height: 8px;
+  }
+  
+  .education-content {
+    padding: 12px 10px;
+  }
+  
+  .education-year {
+    font-size: 0.75rem;
+  }
+  
+  .education-title {
+    font-size: 0.95rem;
+  }
+  
+  .education-institution {
+    font-size: 0.85rem;
+  }
+}
+
+/* Landscape Mobile Orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+  .education-timeline {
+    padding: 0 10px;
+  }
+  
+  .education-item {
+    margin-bottom: 25px;
+  }
+  
+  .education-content {
+    padding: 15px;
+  }
+}
+
+/* High DPI/Retina Display Adjustments */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .education-timeline::before {
+    width: 1px;
+    background-size: 1px 4px;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .education-content {
+    padding: 20px 15px;
+    touch-action: manipulation;
+  }
+  
+  .education-item {
+    margin-bottom: 25px;
+  }
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .education-timeline::before,
+  .education-item::before,
+  .education-content {
+    transition: none;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .education-timeline::before {
+    background: #333 !important;
+  }
+  
+  .education-item::before {
+    background: #333 !important;
+    box-shadow: none !important;
+  }
+  
+  .education-content {
+    border: 1px solid #333 !important;
+    background: white !important;
+    page-break-inside: avoid;
+  }
 }
 
 /* Contact Section - Optimized layout */
@@ -954,10 +1428,17 @@ body {
     font-size: 2rem;
   }
 
+  .profile-imageee img {
+  width: 115%;
+  height: 135%;
+  
+ 
+}
+
   .projects-grid {
     grid-template-columns: 1fr;
     gap: 20px;
-    padding: 10px;
+    padding: 0px;
   }
 
   .project-card {
