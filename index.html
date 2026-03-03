@@ -3,28 +3,47 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Surya's Portfolio</title>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet"
-    />
+    <title>Surya Mathivanan | AI &amp; Full Stack Developer</title>
+    <meta name="description" content="Portfolio of Surya Mathivanan — AI &amp; Data Science student, full-stack developer specialising in MERN, Firebase, and modern web apps." />
+    <!-- Open Graph -->
+    <meta property="og:title" content="Surya Mathivanan | AI &amp; Full Stack Developer" />
+    <meta property="og:description" content="Final-year B.Tech student in AI &amp; Data Science. 10+ projects, 850+ problems solved, 6+ hackathons." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://surya-mathivanan.github.io/" />
+    <meta property="og:image" content="https://surya-mathivanan.github.io/assets/profilephoto.jpg" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Surya Mathivanan | AI &amp; Full Stack Developer" />
+    <meta name="twitter:description" content="Final-year B.Tech student in AI &amp; Data Science. MERN stack, Firebase, Python." />
+    <meta name="twitter:image" content="https://surya-mathivanan.github.io/assets/profilephoto.jpg" />
+    <!-- Fonts & Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="styles.css" />
     <link href="assets/iconimg.ico" rel="icon">
     <link href="assets/iconimg.ico" rel="apple-touch-icon">
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   </head>
   <body>
+    <!-- Page Loader -->
+    <div id="page-loader" class="page-loader">
+      <div class="loader-ring"></div>
+      <span class="loader-text">Loading<span class="loader-dots">...</span></span>
+    </div>
+
+    <!-- Back to Top -->
+    <button id="backToTop" class="back-to-top" aria-label="Back to top">
+      <i class="fas fa-chevron-up"></i>
+    </button>
+
     <div id="resume-popup" class="resume-popup" style="display: none">
       <p>
-  <img src="assets/icons8-phone.gif" alt="Phone Icon" style="height: 2em; vertical-align: middle;" />
-  Check out my
-  <a
-    href="https://drive.google.com/file/d/1YONLZcecEoN6yHalapCUkgGOtwjgbrPb/view"
-    target="_blank"
-  >
-    Resume
-  </a>
-  !
-</p>
+        <img src="assets/icons8-phone.gif" alt="Phone Icon" style="height: 2em; vertical-align: middle;" />
+        Check out my
+        <a href="https://drive.google.com/file/d/1NqYzF1vdeHLuPLycrkfRk_MD0aA5nr71/view?usp=drive_link" target="_blank">Resume</a>!
+      </p>
       <button id="close-popup">&times;</button>
     </div>
 
@@ -100,37 +119,52 @@
       <!-- Main Grid -->
       <div class="main-grid" id="mainGrid">
         <div class="grid-item profile-imageee" data-section="about">
-          <img src="assets/profilephoto.jpg" alt="" />
+          <img src="assets/profilephoto.jpg" alt="Surya Mathivanan" loading="lazy" />
         </div>
         <div class="grid-item about" data-section="about">
-          <!-- <i class="fas fa-user"></i> -->
-           <img src="assets/icons8-manager-48.png" alt="Skills GIF" style="width:48px; height:48px; display:block; margin:0 auto 10px;" />
+          <img src="assets/icons8-manager-48.png" alt="About" />
           <h2>About</h2>
           <p>Learn more about me</p>
         </div>
         <div class="grid-item projects" data-section="projects">
-          <!-- <i class="fas fa-code"></i> -->
-           <img src="assets/icons8-project.gif" alt="Skills GIF" style="width:48px; height:48px; display:block; margin:0 auto 10px;" />
+          <img src="assets/icons8-project.gif" alt="Projects" />
           <h2>Projects</h2>
           <p>My latest work</p>
         </div>
         <div class="grid-item education" data-section="education">
-          <!-- <i class="fas fa-graduation-cap"></i> -->
-           <img src="assets/icons8-signing-a-document-48.png" alt="Skills GIF" style="width:48px; height:48px; display:block; margin:0 auto 10px;" />
+          <img src="assets/icons8-signing-a-document-48.png" alt="Education" />
           <h2>Education</h2>
           <p>Academic journey</p>
         </div>
         <div class="grid-item skills" data-section="skills">
-          <!-- <i class="fas fa-cogs"></i> -->
-          <img src="assets/icons8-analytics-48.png" alt="Skills GIF" style="width:48px; height:48px; display:block; margin:0 auto 10px;" />
+          <img src="assets/icons8-analytics-48.png" alt="Skills" />
           <h2>Skills</h2>
           <p>Technical expertise</p>
         </div>
         <div class="grid-item contact" data-section="contact">
-          <!-- <i class="fas fa-envelope"></i> -->
-           <img src="assets/icons8-chat.gif" alt="Skills GIF" style="width:48px; height:48px; display:block; margin:0 auto 10px;" />
+          <img src="assets/icons8-chat.gif" alt="Contact" />
           <h2>Contact</h2>
           <p>Get in touch</p>
+        </div>
+      </div>
+
+      <!-- Hero Name Banner -->
+      <div class="hero-banner" id="heroBanner">
+        <div class="hero-inner">
+          <p class="hero-greeting">Hi, I'm</p>
+          <h1 class="hero-name">Surya Mathivanan</h1>
+          <p class="hero-role"><span id="typedRole"></span><span class="cursor-blink">|</span></p>
+          <div class="hero-badges">
+            <span class="badge"><i class="fas fa-map-marker-alt"></i> Coimbatore, India</span>
+            <span class="badge"><i class="fas fa-graduation-cap"></i> Final Year B.Tech (AI &amp; DS)</span>
+            <span class="badge"><i class="fas fa-code"></i> 850+ Problems Solved</span>
+          </div>
+          <div class="hero-quick-links">
+            <a href="https://github.com/Surya-Mathivanan" target="_blank" class="hero-link"><i class="fab fa-github"></i></a>
+            <a href="https://linkedin.com/in/surya--mathivanan" target="_blank" class="hero-link"><i class="fab fa-linkedin"></i></a>
+            <a href="https://codolio.com/profile/Surya-Mathivanan" target="_blank" class="hero-link"><i class="fas fa-briefcase"></i></a>
+            <a href="https://drive.google.com/file/d/1NqYzF1vdeHLuPLycrkfRk_MD0aA5nr71/view?usp=drive_link" target="_blank" class="hero-link hero-resume"><i class="fas fa-file-alt"></i> Resume</a>
+          </div>
         </div>
       </div>
 
@@ -196,39 +230,155 @@
         <div class="expanded-content">
           <h1 class="section-title">Projects</h1>
           <div class="projects-grid">
-            <div class="project-card">
-              <img
-                src="assets/image.png"
-                alt="GPay Reward Application"
-                class="project-image"
-              />
-              <div class="project-info">
-                <h3 class="project-title">GPay Reward Application</h3>
-                <p class="project-description">
-                  A web-based system where users can log in, register, and
-                  redeem rewards using unique codes. Secure authentication, code
-                  tracking, and automatic deletion of expired rewards are
-                  included.
-                </p>
-                <div class="project-links">
-                  <a
-                    href="https://github.com/Surya-Mathivanan/gpay-reward-application"
-                    class="project-link"
-                    target="_blank"
-                  >
-                    <i class="fab fa-github"></i> GitHub
-                  </a>
-                  <a
-                    href="https://redeem-appp.vercel.app/login"
-                    class="project-link"
-                  >
-                    <i class="fas fa-external-link-alt"></i> Live Demo
-                  </a>
-                </div>
-              </div>
-            </div>
 
-            <div class="linkedin-embed-container">
+            <div class="project-card">
+  <img
+    src="assets/image.png"
+    alt="Cognivue-AI"
+    class="project-image"
+  />
+  <div class="project-info">
+    <h3 class="project-title">Cognivue-AI</h3>
+    <p class="project-description">
+      An AI-powered web application designed to deliver intelligent
+      responses and data-driven insights. Built with modern backend
+      architecture and deployed on cloud infrastructure with secure
+      authentication and scalable deployment configuration.
+    </p>
+    <div class="project-links">
+      <a
+        href="https://github.com/Surya-Mathivanan/cognivue-ai"
+        class="project-link"
+        target="_blank"
+      >
+        <i class="fab fa-github"></i> GitHub
+      </a>
+      <a
+        href="#"
+        class="project-link"
+      >
+        <i class="fas fa-external-link-alt"></i> Live Demo
+      </a>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<div class="project-card">
+  <img
+    src="assets/image.png"
+    alt="GPay Reward Application"
+    class="project-image"
+  />
+  <div class="project-info">
+    <h3 class="project-title">GPay Reward Application</h3>
+    <p class="project-description">
+      A secure reward redemption system where users can register, log in,
+      and redeem rewards using unique codes. Includes authentication,
+      reward validation, expiry management, and admin-level code tracking.
+      Built with full-stack web technologies and deployed live.
+    </p>
+    <div class="project-links">
+      <a
+        href="https://github.com/Surya-Mathivanan/gpay-reward-application"
+        class="project-link"
+        target="_blank"
+      >
+        <i class="fab fa-github"></i> GitHub
+      </a>
+      <a
+        href="https://redeem-appp.vercel.app/login"
+        class="project-link"
+      >
+        <i class="fas fa-external-link-alt"></i> Live Demo
+      </a>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<div class="project-card">
+  <img
+    src="assets/image.png"
+    alt="Campus Carbon Footprint Analyzer"
+    class="project-image"
+  />
+  <div class="project-info">
+    <h3 class="project-title">Campus Carbon Footprint Analyzer</h3>
+    <p class="project-description">
+      A full-stack web application built with Django and React to track,
+      analyze, and reduce campus carbon emissions. Features include emission
+      calculation modules, data visualization dashboards, JWT authentication,
+      and PostgreSQL integration for secure environmental data management.
+    </p>
+    <div class="project-links">
+      <a
+        href="https://github.com/Surya-Mathivanan/campus-carbon-footprint-analyzer"
+        class="project-link"
+        target="_blank"
+      >
+        <i class="fab fa-github"></i> GitHub
+      </a>
+      <a
+        href="#"
+        class="project-link"
+      >
+        <i class="fas fa-external-link-alt"></i> Live Demo
+      </a>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="project-card">
+  <img
+    src="assets/image.png"
+    alt="Live Quiz Master"
+    class="project-image"
+  />
+  <div class="project-info">
+    <h3 class="project-title">Live Quiz Master</h3>
+    <p class="project-description">
+      A real-time interactive quiz platform built with React, Express,
+      Socket.IO, TypeScript, and PostgreSQL. Features live question
+      synchronization, automatic scoring, leaderboard updates, admin
+      control panel, and WebSocket-based real-time communication for
+      seamless multi-user quiz sessions.
+    </p>
+    <div class="project-links">
+      <a
+        href="https://github.com/Surya-Mathivanan/live-quiz-master"
+        class="project-link"
+        target="_blank"
+      >
+        <i class="fab fa-github"></i> GitHub
+      </a>
+      <a
+        href="#"
+        class="project-link"
+      >
+        <i class="fas fa-external-link-alt"></i> Live Demo
+      </a>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+            
+           
+            <!-- <div class="linkedin-embed-container">
               <iframe
                 src="https://www.linkedin.com/embed/feed/update/urn:li:share:7356607601146548225?collapsed=1"
                 frameborder="0"
@@ -236,7 +386,7 @@
                 sandbox="allow-scripts allow-same-origin allow-popups"
                 title="Embedded post"
               ></iframe>
-            </div>
+            </div> -->
 
             <div class="project-card">
               <img
@@ -419,7 +569,7 @@ The main goal of this project was to practice different types of Power BI charts
               </div>
             </div>
 
-            <div class="linkedin-embed-container">
+            <!-- <div class="linkedin-embed-container">
               <iframe
                 src="https://www.linkedin.com/embed/feed/update/urn:li:share:7301774219623682048"
                 frameborder="0"
@@ -427,7 +577,7 @@ The main goal of this project was to practice different types of Power BI charts
                 sandbox="allow-scripts allow-same-origin allow-popups"
                 title="Embedded post"
               ></iframe>
-            </div>
+            </div> -->
 
             <div class="project-card">
               <img
@@ -1042,7 +1192,7 @@ The main goal of this project was to practice different types of Power BI charts
                 <h3 style="margin-bottom: 1rem; font-size: 1.5rem;">
                     <i class="fas fa-file-alt"></i> Download My Resume
                 </h3>
-                <a href="https://drive.google.com/file/d/1YONLZcecEoN6yHalapCUkgGOtwjgbrPb/view" 
+                <a href="https://drive.google.com/file/d/1NqYzF1vdeHLuPLycrkfRk_MD0aA5nr71/view?usp=drive_link" 
                    target="_blank" 
                    rel="noopener noreferrer" 
                    class="resume-link">

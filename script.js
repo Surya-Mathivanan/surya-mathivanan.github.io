@@ -1,777 +1,487 @@
-// DOM Elements
-const searchInput = document.getElementById("searchInput");
-const searchSuggestions = document.getElementById("searchSuggestions");
-const backButton = document.getElementById("backButton");
-const mainGrid = document.getElementById("mainGrid");
-const gridItems = document.querySelectorAll(".grid-item");
-const expandedViews = document.querySelectorAll(".expanded-view");
-const suggestionItems = document.querySelectorAll(".suggestion-item");
+/* ============================================================
+   SURYA MATHIVANAN PORTFOLIO — script.js (CLEAN REWRITE)
+   - Fixed: duplicate keydown listeners merged into one
+   - Fixed: duplicate form submit listeners removed
+   - Added: EmailJS for real email sending
+   - Added: Page loader, typing animation, back-to-top
+   - Added: Certifications injection, hero banner hide/show
+   ============================================================ */
 
+// ── DOM Refs ─────────────────────────────────────────────────
+const searchInput       = document.getElementById('searchInput');
+const searchSuggestions = document.getElementById('searchSuggestions');
+const backButton        = document.getElementById('backButton');
+const mainGrid          = document.getElementById('mainGrid');
+const heroBanner        = document.getElementById('heroBanner');
+const gridItems         = document.querySelectorAll('.grid-item');
+const expandedViews     = document.querySelectorAll('.expanded-view');
+const suggestionItems   = document.querySelectorAll('.suggestion-item');
+const mobileMenuToggle  = document.getElementById('mobileMenuToggle');
+const mobileNav         = document.getElementById('mobileNav');
+const mobileNavOverlay  = document.getElementById('mobileNavOverlay');
+const mobileNavClose    = document.getElementById('mobileNavClose');
+const mobileNavItems    = document.querySelectorAll('.mobile-nav-item');
+const backToTop         = document.getElementById('backToTop');
 
+// ── State ─────────────────────────────────────────────────────
+let isOnHomePage = true;
 
-// Contact Page JavaScript - Enhanced Features
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize all functionality
-    initFormHandler();
-    initAnimations();
-    initScrollAnimations();
-    initSocialLinkTracking();
-    initFormValidation();
+// ── Page Loader ──────────────────────────────────────────────
+const loader = document.getElementById('page-loader');
+window.addEventListener('load', () => {
+  setTimeout(() => loader.classList.add('hidden'), 600);
 });
 
-// Form submission handler with validation and feedback
-function initFormHandler() {
-    const contactForm = document.getElementById('contactForm');
-    const responseMessage = document.getElementById('responseMessage');
-    const submitBtn = document.querySelector('.submit-btn');
-    
-    contactForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        // Validate form before submission
-        if (!validateForm()) {
-            return;
-        }
-        
-        // Show loading state
-        showLoadingState(submitBtn);
-        
-        try {
-            // Simulate form submission (replace with actual API call)
-            const formData = getFormData();
-            const result = await submitForm(formData);
-            
-            if (result.success) {
-                showSuccessMessage(responseMessage);
-                resetForm(contactForm, submitBtn);
-            } else {
-                showErrorMessage(responseMessage, result.message);
-                resetButton(submitBtn);
-            }
-        } catch (error) {
-            showErrorMessage(responseMessage, 'An error occurred. Please try again.');
-            resetButton(submitBtn);
-        }
-    });
+// ── EmailJS Init ─────────────────────────────────────────────
+// Replace with your actual EmailJS Public Key from https://www.emailjs.com/
+emailjs.init('YOUR_EMAILJS_PUBLIC_KEY');
+
+// ── Typing Animation (Hero Banner) ───────────────────────────
+const roles = [
+  'AI & Data Science Student',
+  'Full Stack Developer',
+  'MERN Stack Engineer',
+  'Problem Solver · 850+ DSA',
+  'Open Source Contributor',
+];
+const typedEl = document.getElementById('typedRole');
+let roleIdx = 0, charIdx = 0, deleting = false;
+
+function typeRole() {
+  if (!typedEl) return;
+  const current = roles[roleIdx];
+  if (deleting) {
+    typedEl.textContent = current.substring(0, charIdx--);
+    if (charIdx < 0) { deleting = false; roleIdx = (roleIdx + 1) % roles.length; setTimeout(typeRole, 500); return; }
+    setTimeout(typeRole, 40);
+  } else {
+    typedEl.textContent = current.substring(0, charIdx++);
+    if (charIdx > current.length) { deleting = true; setTimeout(typeRole, 1800); return; }
+    setTimeout(typeRole, 80);
+  }
+}
+setTimeout(typeRole, 1000);
+
+// ── Certifications Injection into About ──────────────────────
+function injectCertifications() {
+  const aboutContent = document.querySelector('#aboutView .expanded-content');
+  if (!aboutContent || aboutContent.querySelector('.cert-section')) return;
+
+  const certs = [
+    { icon: 'fa-award',    color: '#00d4ff', title: 'Software Engineering Fundamentals', org: 'Infosys Springboard' },
+    { icon: 'fa-brain',    color: '#a855f7', title: 'Machine Learning & AI',            org: 'Coursera (Google)' },
+    { icon: 'fa-chart-bar',color: '#00ff88', title: 'Data Analytics',                   org: 'Altair Certification' },
+    { icon: 'fa-globe',    color: '#ff6b35', title: 'Full Stack Web Development',        org: 'Coursera / Self-study' },
+    { icon: 'fa-trophy',   color: '#ff2d78', title: '6+ National Hackathons',            org: 'Participant & Contributor' },
+    { icon: 'fa-code',     color: '#ffa657', title: '850+ Coding Problems',              org: 'LeetCode · CodeChef · Learnlogicify' },
+  ];
+
+  const section = document.createElement('div');
+  section.className = 'cert-section';
+  section.innerHTML = `
+    <h2 class="cert-heading"><i class="fas fa-certificate"></i> Certifications & Achievements</h2>
+    <div class="cert-grid">
+      ${certs.map(c => `
+        <div class="cert-card">
+          <div class="cert-icon" style="color:${c.color}"><i class="fas ${c.icon}"></i></div>
+          <div class="cert-info"><h4>${c.title}</h4><p>${c.org}</p></div>
+        </div>`).join('')}
+    </div>`;
+  aboutContent.appendChild(section);
 }
 
-// Form validation
-function initFormValidation() {
-    const inputs = document.querySelectorAll('.form-input, .form-textarea');
-    
-    inputs.forEach(input => {
-        // Real-time validation
-        input.addEventListener('blur', function() {
-            validateField(this);
-        });
-        
-        // Remove validation styling on focus
-        input.addEventListener('focus', function() {
-            clearFieldValidation(this);
-        });
+// ── Hero Banner visibility ────────────────────────────────────
+function showHeroBanner() { if (heroBanner) heroBanner.classList.remove('hidden'); }
+function hideHeroBanner() { if (heroBanner) heroBanner.classList.add('hidden'); }
+
+// ── Section Navigation ────────────────────────────────────────
+function showSection(section) {
+  if (section === 'home') { goToHome(); return; }
+
+  const targetView = document.getElementById(section + 'View');
+  if (!targetView) return;
+
+  expandedViews.forEach(v => v.classList.remove('active'));
+  isOnHomePage = false;
+  mainGrid.style.display = 'none';
+  hideHeroBanner();
+  targetView.classList.add('active');
+  backButton.style.display = 'block';
+  searchSuggestions.style.display = 'none';
+
+  // Inject certs on first About open
+  if (section === 'about') injectCertifications();
+
+  // Skill bar animation
+  if (section === 'skills') {
+    setTimeout(() => {
+      document.querySelectorAll('.skill-progress').forEach(bar => {
+        bar.style.animation = 'fillBar 1s ease-in-out';
+      });
+    }, 300);
+  }
+
+  // Scroll to top of expanded view
+  targetView.scrollTop = 0;
+}
+
+function goToHome() {
+  isOnHomePage = true;
+  expandedViews.forEach(v => v.classList.remove('active'));
+  mainGrid.style.display = 'grid';
+  showHeroBanner();
+  backButton.style.display = 'none';
+  searchInput.value = '';
+  searchSuggestions.style.display = 'none';
+  backToTop.classList.remove('visible');
+}
+
+// ── Back Button ───────────────────────────────────────────────
+backButton.addEventListener('click', goToHome);
+
+// ── Grid Interactions ─────────────────────────────────────────
+gridItems.forEach(item => {
+  item.addEventListener('mouseenter', () => {
+    if (!isOnHomePage) return;
+    gridItems.forEach(other => { if (other !== item) other.classList.add('blurred'); });
+  });
+  item.addEventListener('mouseleave', () => {
+    if (!isOnHomePage) return;
+    gridItems.forEach(other => other.classList.remove('blurred'));
+  });
+  item.addEventListener('click', () => {
+    if (!isOnHomePage) return;
+    showSection(item.dataset.section);
+  });
+});
+
+// Grid load animation
+window.addEventListener('load', () => {
+  gridItems.forEach((item, i) => {
+    item.style.animation = `fadeInUp 0.5s ease ${i * 0.08}s both`;
+  });
+});
+
+// ── Search ────────────────────────────────────────────────────
+searchInput.addEventListener('input', function () {
+  if (!isOnHomePage) return;
+  const q = this.value.toLowerCase();
+  if (q.length > 0) {
+    searchSuggestions.style.display = 'block';
+    suggestionItems.forEach(item => {
+      item.style.display = item.textContent.toLowerCase().includes(q) ? 'block' : 'none';
     });
+  } else {
+    searchSuggestions.style.display = 'none';
+  }
+});
+
+suggestionItems.forEach(item => {
+  item.addEventListener('click', () => {
+    if (!isOnHomePage) return;
+    showSection(item.dataset.section);
+    searchInput.value = '';
+    searchSuggestions.style.display = 'none';
+  });
+});
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search-container')) searchSuggestions.style.display = 'none';
+});
+
+// ── Mobile Nav ────────────────────────────────────────────────
+function closeMobileNav() {
+  mobileNav.classList.remove('active');
+  mobileNavOverlay.classList.remove('active');
+  document.body.style.overflow = 'auto';
+}
+
+mobileMenuToggle.addEventListener('click', () => {
+  mobileNav.classList.add('active');
+  mobileNavOverlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+});
+mobileNavClose.addEventListener('click', closeMobileNav);
+mobileNavOverlay.addEventListener('click', closeMobileNav);
+
+mobileNavItems.forEach(item => {
+  item.addEventListener('click', e => {
+    e.preventDefault();
+    const section = item.dataset.section;
+    if (section === 'home') { goToHome(); }
+    else if (section) { showSection(section); }
+    closeMobileNav();
+  });
+});
+
+window.addEventListener('resize', () => { if (window.innerWidth > 768) closeMobileNav(); });
+
+// ── Unified Keyboard Handler (single listener — fixes bug) ────
+document.addEventListener('keydown', e => {
+  // Escape: close mobile nav → then go home
+  if (e.key === 'Escape') {
+    if (mobileNav.classList.contains('active')) {
+      closeMobileNav();
+    } else if (!isOnHomePage) {
+      goToHome();
+    }
+    const visibleMsg = document.querySelector('.response-message[style*="block"]');
+    if (visibleMsg) hideMessage(visibleMsg);
+  }
+
+  // Enter in form: tab to next field
+  if (e.key === 'Enter' && e.target.matches('.form-input:not([type="submit"])')) {
+    e.preventDefault();
+    const inputs = Array.from(document.querySelectorAll('.form-input, .form-textarea'));
+    const next = inputs[inputs.indexOf(e.target) + 1];
+    if (next) next.focus();
+    else { const btn = document.querySelector('.submit-btn'); if (btn) btn.focus(); }
+  }
+});
+
+// ── Back to Top ───────────────────────────────────────────────
+expandedViews.forEach(view => {
+  view.addEventListener('scroll', () => {
+    if (view.scrollTop > 300) backToTop.classList.add('visible');
+    else backToTop.classList.remove('visible');
+  });
+});
+
+backToTop.addEventListener('click', () => {
+  const activeView = document.querySelector('.expanded-view.active');
+  if (activeView) activeView.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// ── Contact Form — EmailJS ────────────────────────────────────
+function initFormHandler() {
+  const contactForm   = document.getElementById('contactForm');
+  const responseMsg   = document.getElementById('responseMessage');
+  const submitBtn     = document.querySelector('.submit-btn');
+  if (!contactForm) return;
+
+  contactForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    showLoadingState(submitBtn);
+
+    const params = {
+      from_name:  `${document.getElementById('firstName').value.trim()} ${document.getElementById('lastName').value.trim()}`,
+      from_email: document.getElementById('email').value.trim(),
+      subject:    document.getElementById('subject').value.trim(),
+      message:    document.getElementById('message').value.trim(),
+    };
+
+    try {
+      // ⚠️ Replace 'YOUR_SERVICE_ID' and 'YOUR_TEMPLATE_ID' with your EmailJS values
+      await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', params);
+      showSuccessMessage(responseMsg);
+      resetForm(contactForm, submitBtn);
+    } catch (err) {
+      console.error('EmailJS error:', err);
+      showErrorMessage(responseMsg, 'Failed to send. Please email me directly at kit26.ad59@gmail.com');
+      resetButton(submitBtn);
+    }
+  });
+}
+
+// ── Form Helpers ──────────────────────────────────────────────
+function initFormValidation() {
+  document.querySelectorAll('.form-input, .form-textarea').forEach(input => {
+    input.addEventListener('blur', () => validateField(input));
+    input.addEventListener('focus', () => clearFieldValidation(input));
+  });
 }
 
 function validateForm() {
-    const firstName = document.getElementById('firstName');
-    const lastName = document.getElementById('lastName');
-    const email = document.getElementById('email');
-    const subject = document.getElementById('subject');
-    const message = document.getElementById('message');
-    
-    let isValid = true;
-    
-    // Validate required fields
-    if (!validateField(firstName)) isValid = false;
-    if (!validateField(lastName)) isValid = false;
-    if (!validateField(email)) isValid = false;
-    if (!validateField(subject)) isValid = false;
-    if (!validateField(message)) isValid = false;
-    
-    return isValid;
+  return ['firstName','lastName','email','subject','message']
+    .map(id => validateField(document.getElementById(id)))
+    .every(Boolean);
 }
 
 function validateField(field) {
-    const value = field.value.trim();
-    let isValid = true;
-    let errorMessage = '';
-    
-    // Check if field is empty
-    if (!value) {
-        errorMessage = 'This field is required';
-        isValid = false;
-    } else {
-        // Field-specific validation
-        switch (field.type) {
-            case 'email':
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(value)) {
-                    errorMessage = 'Please enter a valid email address';
-                    isValid = false;
-                }
-                break;
-            case 'text':
-                if (value.length < 2) {
-                    errorMessage = 'Please enter at least 2 characters';
-                    isValid = false;
-                }
-                break;
-            default:
-                if (field.tagName === 'TEXTAREA' && value.length < 10) {
-                    errorMessage = 'Please enter at least 10 characters';
-                    isValid = false;
-                }
-        }
-    }
-    
-    // Apply validation styling
-    if (isValid) {
-        field.style.borderColor = 'var(--success-color)';
-        removeFieldError(field);
-    } else {
-        field.style.borderColor = 'var(--error-color)';
-        showFieldError(field, errorMessage);
-    }
-    
-    return isValid;
+  if (!field) return true;
+  const value = field.value.trim();
+  let ok = true, msg = '';
+  if (!value) { msg = 'This field is required'; ok = false; }
+  else if (field.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) { msg = 'Enter a valid email'; ok = false; }
+  else if (field.type === 'text' && value.length < 2) { msg = 'At least 2 characters'; ok = false; }
+  else if (field.tagName === 'TEXTAREA' && value.length < 10) { msg = 'At least 10 characters'; ok = false; }
+
+  if (ok) { field.style.borderColor = 'var(--neon-green)'; removeFieldError(field); }
+  else     { field.style.borderColor = 'var(--neon-pink)';  showFieldError(field, msg); }
+  return ok;
 }
 
-function showFieldError(field, message) {
-    removeFieldError(field); // Remove any existing error
-    
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'field-error';
-    errorDiv.style.color = 'var(--error-color)';
-    errorDiv.style.fontSize = '0.8rem';
-    errorDiv.style.marginTop = '0.25rem';
-    errorDiv.textContent = message;
-    
-    field.parentNode.appendChild(errorDiv);
+function showFieldError(field, msg) {
+  removeFieldError(field);
+  const div = document.createElement('div');
+  div.className = 'field-error';
+  div.textContent = msg;
+  field.parentNode.appendChild(div);
 }
-
 function removeFieldError(field) {
-    const existingError = field.parentNode.querySelector('.field-error');
-    if (existingError) {
-        existingError.remove();
-    }
+  const e = field.parentNode.querySelector('.field-error');
+  if (e) e.remove();
 }
-
 function clearFieldValidation(field) {
-    field.style.borderColor = 'var(--border-color)';
-    removeFieldError(field);
+  field.style.borderColor = '';
+  removeFieldError(field);
 }
 
-// Get form data
-function getFormData() {
-    return {
-        firstName: document.getElementById('firstName').value.trim(),
-        lastName: document.getElementById('lastName').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        subject: document.getElementById('subject').value.trim(),
-        message: document.getElementById('message').value.trim(),
-        timestamp: new Date().toISOString()
-    };
+function showLoadingState(btn) {
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+  btn.disabled = true;
+}
+function resetButton(btn) {
+  btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+  btn.disabled = false;
+}
+function showSuccessMessage(el) {
+  el.className = 'response-message success';
+  el.innerHTML = '<i class="fas fa-check-circle"></i> Message sent! I\'ll get back to you soon.';
+  el.style.display = 'block';
+  setTimeout(() => hideMessage(el), 6000);
+}
+function showErrorMessage(el, msg) {
+  el.className = 'response-message error';
+  el.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${msg}`;
+  el.style.display = 'block';
+  setTimeout(() => hideMessage(el), 8000);
+}
+function hideMessage(el) {
+  el.style.opacity = '0';
+  setTimeout(() => { el.style.display = 'none'; el.style.opacity = '1'; }, 300);
+}
+function resetForm(form, btn) {
+  form.reset();
+  resetButton(btn);
+  form.querySelectorAll('.form-input, .form-textarea').forEach(clearFieldValidation);
+  // Clear localStorage saved data
+  ['firstName','lastName','email','subject','message'].forEach(id => localStorage.removeItem(`contact_${id}`));
 }
 
-// Simulate form submission (replace with actual API call)
-function submitForm(formData) {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            // Simulate API response
-            resolve({ success: true });
-        }, 2000);
-    });
-}
-
-// Loading state management
-function showLoadingState(button) {
-    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-    button.disabled = true;
-    button.style.cursor = 'not-allowed';
-}
-
-function resetButton(button) {
-    button.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
-    button.disabled = false;
-    button.style.cursor = 'pointer';
-}
-
-// Success/Error message handling
-function showSuccessMessage(messageElement) {
-    messageElement.className = 'response-message success';
-    messageElement.innerHTML = '<i class="fas fa-check-circle"></i> Thank you! Your message has been sent successfully. I\'ll get back to you soon!';
-    messageElement.style.display = 'block';
-    
-    // Auto-hide after 5 seconds
-    setTimeout(() => {
-        hideMessage(messageElement);
-    }, 5000);
-}
-
-function showErrorMessage(messageElement, message) {
-    messageElement.className = 'response-message error';
-    messageElement.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
-    messageElement.style.display = 'block';
-    
-    // Auto-hide after 7 seconds
-    setTimeout(() => {
-        hideMessage(messageElement);
-    }, 7000);
-}
-
-function hideMessage(messageElement) {
-    messageElement.style.opacity = '0';
-    setTimeout(() => {
-        messageElement.style.display = 'none';
-        messageElement.style.opacity = '1';
-    }, 300);
-}
-
-// Form reset
-function resetForm(form, button) {
-    form.reset();
-    resetButton(button);
-    
-    // Clear validation styling
-    const inputs = form.querySelectorAll('.form-input, .form-textarea');
-    inputs.forEach(input => {
-        clearFieldValidation(input);
-    });
-}
-
-// Animation initialization
-function initAnimations() {
-    // Add stagger animation to social links
-    const socialLinks = document.querySelectorAll('.social-link');
-    socialLinks.forEach((link, index) => {
-        link.style.animationDelay = `${index * 0.1}s`;
-        link.classList.add('fade-in');
-    });
-    
-    // Add hover sound effects (optional)
-    addHoverSounds();
-}
-
-// Scroll animations for statistics
-function initScrollAnimations() {
-    const observerOptions = {
-        threshold: 0.5,
-        rootMargin: '0px 0px -100px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // Add random delay for more natural animation
-                const delay = Math.random() * 0.3;
-                entry.target.style.animationDelay = `${delay}s`;
-                entry.target.classList.add('animate');
-                
-                // Animate numbers counting up
-                animateCounter(entry.target);
-                
-                // Unobserve after animation
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    // Observe stat items
-    document.querySelectorAll('.stat-item').forEach(item => {
-        observer.observe(item);
-    });
-    
-    // Observe info blocks for slide-in animation
-    document.querySelectorAll('.info-block').forEach((block, index) => {
-        block.style.transform = 'translateX(-20px)';
-        block.style.opacity = '0';
-        block.style.transition = 'all 0.6s ease';
-        block.style.transitionDelay = `${index * 0.1}s`;
-        
-        setTimeout(() => {
-            block.style.transform = 'translateX(0)';
-            block.style.opacity = '1';
-        }, 500 + (index * 100));
-    });
-}
-
-// Animate counter numbers
-function animateCounter(statItem) {
-    const numberElement = statItem.querySelector('.stat-number');
-    const finalNumber = numberElement.textContent;
-    
-    // Extract numeric value
-    const isPlus = finalNumber.includes('+');
-    const isHours = finalNumber.includes('h');
-    const numericValue = parseInt(finalNumber.replace(/[^\d]/g, ''));
-    
-    if (isNaN(numericValue)) return;
-    
-    let currentNumber = 0;
-    const increment = numericValue / 30; // 30 steps for smooth animation
-    const duration = 1000; // 1 second
-    const stepTime = duration / 30;
-    
-    const counter = setInterval(() => {
-        currentNumber += increment;
-        if (currentNumber >= numericValue) {
-            currentNumber = numericValue;
-            clearInterval(counter);
-        }
-        
-        let displayValue = Math.floor(currentNumber).toString();
-        if (isPlus) displayValue += '+';
-        if (isHours) displayValue += 'h';
-        
-        numberElement.textContent = displayValue;
-    }, stepTime);
-}
-
-// Social link tracking and analytics
-function initSocialLinkTracking() {
-    const socialLinks = document.querySelectorAll('.social-link');
-    
-    socialLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            const platform = this.title || this.getAttribute('aria-label');
-            
-            // Track click (replace with actual analytics)
-            trackSocialClick(platform, this.href);
-            
-            // Add click animation
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = '';
-            }, 150);
-        });
-    });
-}
-
-// Analytics tracking function (implement with your preferred service)
-function trackSocialClick(platform, url) {
-    console.log(`Social link clicked: ${platform} - ${url}`);
-    
-    // Example Google Analytics tracking (uncomment if using GA)
-    // if (typeof gtag !== 'undefined') {
-    //     gtag('event', 'social_click', {
-    //         'social_platform': platform,
-    //         'link_url': url
-    //     });
-    // }
-}
-
-// Add hover sound effects (optional feature)
-function addHoverSounds() {
-    // Only add if user hasn't disabled sounds
-    if (localStorage.getItem('soundsEnabled') !== 'false') {
-        const buttons = document.querySelectorAll('.submit-btn, .social-link, .resume-link');
-        
-        buttons.forEach(button => {
-            button.addEventListener('mouseenter', () => {
-                // Play subtle hover sound (implement if desired)
-                // playHoverSound();
-            });
-        });
-    }
-}
-
-// Keyboard navigation enhancement
-document.addEventListener('keydown', function(e) {
-    // Enhanced form navigation
-    if (e.key === 'Enter' && e.target.matches('.form-input:not([type="submit"])')) {
-        e.preventDefault();
-        const inputs = Array.from(document.querySelectorAll('.form-input, .form-textarea'));
-        const currentIndex = inputs.indexOf(e.target);
-        const nextInput = inputs[currentIndex + 1];
-        
-        if (nextInput) {
-            nextInput.focus();
-        } else {
-            document.querySelector('.submit-btn').focus();
-        }
-    }
-    
-    // Escape key to close messages
-    if (e.key === 'Escape') {
-        const visibleMessage = document.querySelector('.response-message[style*="block"]');
-        if (visibleMessage) {
-            hideMessage(visibleMessage);
-        }
-    }
-});
-
-// Auto-save form data to prevent loss
+// ── Auto-save contact form ────────────────────────────────────
 function initAutoSave() {
-    const form = document.getElementById('contactForm');
-    const inputs = form.querySelectorAll('.form-input, .form-textarea');
-    
-    // Load saved data on page load
-    inputs.forEach(input => {
-        const savedValue = localStorage.getItem(`contact_${input.id}`);
-        if (savedValue) {
-            input.value = savedValue;
-        }
-        
-        // Save data on input
-        input.addEventListener('input', function() {
-            localStorage.setItem(`contact_${this.id}`, this.value);
-        });
-    });
-    
-    // Clear saved data on successful submission
-    form.addEventListener('submit', function() {
-        setTimeout(() => {
-            inputs.forEach(input => {
-                localStorage.removeItem(`contact_${input.id}`);
-            });
-        }, 3000); // Clear after successful submission delay
-    });
+  const form = document.getElementById('contactForm');
+  if (!form) return;
+  form.querySelectorAll('.form-input, .form-textarea').forEach(input => {
+    const saved = localStorage.getItem(`contact_${input.id}`);
+    if (saved) input.value = saved;
+    input.addEventListener('input', () => localStorage.setItem(`contact_${input.id}`, input.value));
+  });
 }
 
-// Initialize auto-save if not in private browsing
 try {
-    localStorage.setItem('test', '1');
-    localStorage.removeItem('test');
-    initAutoSave();
-} catch (e) {
-    console.log('LocalStorage not available - auto-save disabled');
-}
+  localStorage.setItem('_test', '1');
+  localStorage.removeItem('_test');
+  initAutoSave();
+} catch (_) {}
 
-// Theme detection and adjustment
-function detectTheme() {
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    
-    // Adjust animations based on user preferences
-    if (prefersReducedMotion.matches) {
-        document.documentElement.style.setProperty('--transition-base', 'none');
-    }
-    
-    // Listen for theme changes
-    prefersDark.addEventListener('change', (e) => {
-        // Adjust theme if needed
-        console.log('Theme changed:', e.matches ? 'dark' : 'light');
+// ── Social Link Tracking ──────────────────────────────────────
+function initSocialLinkTracking() {
+  document.querySelectorAll('.social-link').forEach(link => {
+    link.addEventListener('click', () => {
+      link.style.transform = 'scale(0.92)';
+      setTimeout(() => link.style.transform = '', 150);
     });
+  });
 }
 
-// Initialize theme detection
-detectTheme();
+// ── Scroll Animations (IntersectionObserver) ──────────────────
+function initScrollAnimations() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animation = 'fadeInUp 0.5s ease both';
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.skill-category, .project-card, .education-item, .cert-card, .stat-item').forEach(el => obs.observe(el));
+}
 
-// Performance optimization - lazy load map
+// ── Stats counter animation ───────────────────────────────────
+function initStatsAnimation() {
+  const statObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        entry.target.classList.add('animate');
+        statObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.stat-item').forEach(el => statObs.observe(el));
+}
+
+function animateCounter(statItem) {
+  const el = statItem.querySelector('.stat-number');
+  if (!el) return;
+  const final = el.textContent;
+  const isPlus = final.includes('+'), isH = final.includes('h');
+  const num = parseInt(final.replace(/\D/g, ''));
+  if (isNaN(num)) return;
+  let cur = 0;
+  const inc = num / 30, step = 1000 / 30;
+  const timer = setInterval(() => {
+    cur += inc;
+    if (cur >= num) { cur = num; clearInterval(timer); }
+    el.textContent = Math.floor(cur) + (isPlus ? '+' : '') + (isH ? 'h' : '');
+  }, step);
+}
+
+// ── Info block slide-in ───────────────────────────────────────
+function initInfoBlocks() {
+  document.querySelectorAll('.info-block').forEach((block, i) => {
+    block.style.opacity = '0';
+    block.style.transform = 'translateX(-16px)';
+    block.style.transition = `all 0.5s ease ${i * 0.1}s`;
+    setTimeout(() => {
+      block.style.opacity = '1';
+      block.style.transform = 'translateX(0)';
+    }, 600 + i * 100);
+  });
+}
+
+// ── Resume Popup ──────────────────────────────────────────────
+function initResumePopup() {
+  const popup   = document.getElementById('resume-popup');
+  const closeBtn = document.getElementById('close-popup');
+  if (!popup || !closeBtn) return;
+
+  closeBtn.addEventListener('click', () => popup.style.display = 'none');
+  setTimeout(() => { popup.style.display = 'flex'; }, 5000);
+}
+
+// ── Reduce-motion support ─────────────────────────────────────
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.documentElement.style.setProperty('--trans', 'none');
+  document.documentElement.style.setProperty('--trans-slow', 'none');
+}
+
+// ── Lazy-load map ─────────────────────────────────────────────
 function initLazyMap() {
-    const mapContainer = document.querySelector('.map-container');
-    const mapIframe = mapContainer.querySelector('iframe');
-    
-    const mapObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // Map is visible, ensure it's loaded
-                if (!mapIframe.src) {
-                    mapIframe.src = mapIframe.getAttribute('data-src') || mapIframe.src;
-                }
-                mapObserver.unobserve(entry.target);
-            }
-        });
+  const mc = document.querySelector('.map-container');
+  if (!mc) return;
+  const iframe = mc.querySelector('iframe');
+  if (!iframe) return;
+  new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { /* map already has src, just ensure loaded */ }
     });
-    
-    mapObserver.observe(mapContainer);
+  }).observe(mc);
 }
 
-// Initialize lazy loading
-initLazyMap();
-
-// Export functions for testing (if needed)
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        validateForm,
-        validateField,
-        getFormData,
-        trackSocialClick
-    };
-}
-
-
-
-
-// Track current state
-let isOnHomePage = true;
-
-// Search functionality - only works on home page
-searchInput.addEventListener("input", function () {
-  if (!isOnHomePage) return; // Only work on home page
-
-  const query = this.value.toLowerCase();
-  if (query.length > 0) {
-    searchSuggestions.style.display = "block";
-    suggestionItems.forEach((item) => {
-      const text = item.textContent.toLowerCase();
-      if (text.includes(query)) {
-        item.style.display = "block";
-      } else {
-        item.style.display = "none";
-      }
-    });
-  } else {
-    searchSuggestions.style.display = "none";
-  }
-});
-
-// Search suggestions click - only works on home page
-suggestionItems.forEach((item) => {
-  item.addEventListener("click", function () {
-    if (!isOnHomePage) return; // Only work on home page
-
-    const section = this.dataset.section;
-    showSection(section);
-    searchInput.value = "";
-    searchSuggestions.style.display = "none";
-  });
-});
-
-// Hide suggestions when clicking outside
-document.addEventListener("click", function (e) {
-  if (!e.target.closest(".search-container")) {
-    searchSuggestions.style.display = "none";
-  }
-});
-
-// Grid item hover effects
-gridItems.forEach((item) => {
-  item.addEventListener("mouseenter", function () {
-    if (!isOnHomePage) return; // Only work on home page
-
-    gridItems.forEach((otherItem) => {
-      if (otherItem !== this) {
-        otherItem.classList.add("blurred");
-      }
-    });
-  });
-
-  item.addEventListener("mouseleave", function () {
-    if (!isOnHomePage) return; // Only work on home page
-
-    gridItems.forEach((otherItem) => {
-      otherItem.classList.remove("blurred");
-    });
-  });
-
-  // Grid item click
-  item.addEventListener("click", function () {
-    if (!isOnHomePage) return; // Only work on home page
-
-    const section = this.dataset.section;
-    showSection(section);
-  });
-});
-
-// Show section function
-function showSection(section) {
-  // Handle home section specially
-  if (section === "home") {
-    goToHome();
-    return;
-  }
-
-  const targetView = document.getElementById(section + "View");
-  if (targetView) {
-    // First hide all expanded views
-    expandedViews.forEach((view) => {
-      view.classList.remove("active");
-    });
-
-    isOnHomePage = false;
-    mainGrid.style.display = "none";
-    targetView.classList.add("active");
-    backButton.style.display = "block";
-
-    // Hide search suggestions when leaving home page
-    searchSuggestions.style.display = "none";
-
-    // Add scroll animation for skill bars
-    if (section === "skills") {
-      setTimeout(() => {
-        const skillBars = document.querySelectorAll(".skill-progress");
-        skillBars.forEach((bar) => {
-          bar.style.animation = "fillBar 1s ease-in-out";
-        });
-      }, 300);
-    }
-  }
-}
-
-// Function to return to home
-function goToHome() {
-  isOnHomePage = true;
-  // Hide all expanded views
-  expandedViews.forEach((view) => {
-    view.classList.remove("active");
-  });
-  // Show main grid
-  mainGrid.style.display = "grid";
-  backButton.style.display = "none";
-
-  // Reset search
-  searchInput.value = "";
-  searchSuggestions.style.display = "none";
-}
-
-// Back button functionality
-backButton.addEventListener("click", goToHome);
-
-// Smooth scrolling for expanded views
-expandedViews.forEach((view) => {
-  view.addEventListener("scroll", function () {
-    const scrolled = this.scrollTop;
-    const rate = scrolled * -0.5;
-    this.style.backgroundPositionY = rate + "px";
-  });
-});
-
-// Form submission
-document
-  .querySelector(".contact-form form")
-  .addEventListener("submit", function (e) {
-    e.preventDefault();
-    alert("Thank you for your message! I'll get back to you soon.");
-    this.reset();
-  });
-
-// Keyboard navigation
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Escape") {
-    if (mobileNav.classList.contains("active")) {
-      closeMobileNav();
-    } else {
-      goToHome();
-    }
-  }
-});
-
-// Add loading animation
-window.addEventListener("load", function () {
-  gridItems.forEach((item, index) => {
-    item.style.animation = `fadeInUp 0.6s ease ${index * 0.1}s both`;
-  });
-});
-
-// Intersection Observer for animations
-const observerOptions = {
-  threshold: 0.1,
-  rootMargin: "0px 0px -50px 0px",
-};
-
-const observer = new IntersectionObserver(function (entries) {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.style.animation = "fadeInUp 0.6s ease both";
-    }
-  });
-}, observerOptions);
-
-// Observe elements for animation
-document
-  .querySelectorAll(".skill-category, .project-card, .education-item")
-  .forEach((el) => {
-    observer.observe(el);
-  });
-
-// Mobile Navigation Elements
-const mobileMenuToggle = document.getElementById("mobileMenuToggle");
-const mobileNav = document.getElementById("mobileNav");
-const mobileNavOverlay = document.getElementById("mobileNavOverlay");
-const mobileNavClose = document.getElementById("mobileNavClose");
-const mobileNavItems = document.querySelectorAll(".mobile-nav-item");
-
-// Mobile menu toggle
-mobileMenuToggle.addEventListener("click", function () {
-  mobileNav.classList.add("active");
-  mobileNavOverlay.classList.add("active");
-  document.body.style.overflow = "hidden";
-});
-
-// Close mobile nav
-function closeMobileNav() {
-  mobileNav.classList.remove("active");
-  mobileNavOverlay.classList.remove("active");
-  document.body.style.overflow = "auto";
-}
-
-mobileNavClose.addEventListener("click", closeMobileNav);
-mobileNavOverlay.addEventListener("click", closeMobileNav);
-
-// Mobile nav item clicks
-mobileNavItems.forEach((item) => {
-  item.addEventListener("click", function (e) {
-    e.preventDefault();
-
-    const action = this.dataset.action;
-    const section = this.dataset.section;
-
-    if (action === "home") {
-      // Go back to home
-      isOnHomePage = true;
-      expandedViews.forEach((view) => {
-        view.classList.remove("active");
-      });
-      mainGrid.style.display = "flex";
-      searchInput.value = "";
-      searchSuggestions.style.display = "none";
-    } else if (section) {
-      // Show section
-      showSection(section);
-    }
-
-    closeMobileNav();
-  });
-});
-
-// Close mobile nav on escape key
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Escape") {
-    if (mobileNav.classList.contains("active")) {
-      closeMobileNav();
-    } else {
-      isOnHomePage = true;
-      expandedViews.forEach((view) => {
-        view.classList.remove("active");
-      });
-      mainGrid.style.display = "flex";
-      backButton.style.display = "none";
-      searchInput.value = "";
-      searchSuggestions.style.display = "none";
-    }
-  }
-});
-
-// Update window resize handler
-window.addEventListener("resize", function () {
-  if (window.innerWidth > 768) {
-    closeMobileNav();
-  }
-});
-
-function showResumePopup() {
-  const popup = document.getElementById("resume-popup");
-  const closeBtn = document.getElementById("close-popup");
-
-  // Close action
-  closeBtn.addEventListener("click", () => {
-    popup.style.display = "none";
-  });
-
-  // Show popup after delay
-  setTimeout(() => {
-    popup.style.display = "flex";
-  }, 4000); // 6 seconds delay
-}
-
-// Call once on initial load
-window.addEventListener("DOMContentLoaded", showResumePopup);
-
-// Optional: Call again whenever user navigates to #home (if using hash navigation)
-window.addEventListener("hashchange", () => {
-  if (window.location.hash === "" || window.location.hash === "#home") {
-    showResumePopup();
-  }
+// ── Init all ─────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  initFormHandler();
+  initFormValidation();
+  initScrollAnimations();
+  initStatsAnimation();
+  initSocialLinkTracking();
+  initInfoBlocks();
+  initLazyMap();
+  initResumePopup();
+  typeRole();
 });
