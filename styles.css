@@ -772,26 +772,31 @@ main { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding
    ============================================================ */
 .about-grid {
   display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: 3rem;
+  grid-template-columns: 1fr;   /* single column — photo moved inline with h2 */
+  gap: 0;
   align-items: start;
 }
 
-.about-photo {
-  position: sticky;
-  top: 90px;
+/* Inline circular avatar beside h2 — Google profile chip style */
+.about-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
-.about-photo img {
-  width: 100%;
-  aspect-ratio: 3/4;
+.about-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
   object-fit: cover;
-  object-position: top;
-  border-radius: var(--r-sm);
-  border: 0.5px solid var(--border2);
-  filter: saturate(1.05);
-  transition: var(--trans);
+  object-position: top center;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 0 3px var(--bg3), var(--glow-gold);
+  flex-shrink: 0;
+  transition: box-shadow 0.25s ease;
 }
-.about-photo img:hover { box-shadow: var(--glow-gold); }
+.about-heading:hover .about-avatar {
+  box-shadow: 0 0 0 3px var(--bg3), 0 0 18px rgba(200, 185, 154, 0.55);
+}
 
 .about-block p {
   font-size: 15px;
@@ -1487,20 +1492,6 @@ footer {
 
   .hero-scroll-indicator { display: none; }
 
-  /* About — stack photo above text */
-  .about-grid {
-    grid-template-columns: 1fr;
-    gap: 1.75rem;
-  }
-  .about-photo {
-    position: static;
-    display: flex;
-    justify-content: center;
-  }
-  .about-photo img {
-    width: min(200px, 55vw);
-    aspect-ratio: 3/4;
-  }
 
   /* Projects — 2 cols on tablet, 1 on small mobile (below) */
   .projects-grid { grid-template-columns: 1fr 1fr; }
