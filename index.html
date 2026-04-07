@@ -27,11 +27,49 @@
 </head>
 <body>
 
-  <!-- ── Page Loader ──────────────────────────────────── -->
+  <!-- ── Page Loader (Ghost) ──────────────────────────── -->
   <div id="page-loader" class="page-loader">
-    <div class="loader-ring"></div>
-    <span class="loader-text">Loading<span class="loader-dots">...</span></span>
+    <div id="ghost">
+      <div id="red">
+        <div id="pupil"></div>
+        <div id="pupil1"></div>
+        <div id="eye"></div>
+        <div id="eye1"></div>
+        <div id="top0"></div>
+        <div id="top1"></div>
+        <div id="top2"></div>
+        <div id="top3"></div>
+        <div id="top4"></div>
+        <div id="st0"></div>
+        <div id="st1"></div>
+        <div id="st2"></div>
+        <div id="st3"></div>
+        <div id="st4"></div>
+        <div id="st5"></div>
+        <div id="an1"></div>
+        <div id="an2"></div>
+        <div id="an3"></div>
+        <div id="an4"></div>
+        <div id="an5"></div>
+        <div id="an6"></div>
+        <div id="an7"></div>
+        <div id="an8"></div>
+        <div id="an9"></div>
+        <div id="an10"></div>
+        <div id="an11"></div>
+        <div id="an12"></div>
+        <div id="an13"></div>
+        <div id="an14"></div>
+        <div id="an15"></div>
+        <div id="an16"></div>
+        <div id="an17"></div>
+        <div id="an18"></div>
+      </div>
+      <div id="shadow"></div>
+    </div>
+    <span class="loader-text">Initialising<span class="loader-dots">...</span></span>
   </div>
+
 
   <!-- ── Back to Top ──────────────────────────────────── -->
   <button id="backToTop" class="back-to-top" aria-label="Back to top">
@@ -51,9 +89,11 @@
       <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-actions">
-      <button class="theme-icon-btn" id="themeIconBtn" aria-label="Toggle theme" title="Toggle light / dark mode">
-        <i class="fas fa-moon" id="themeIcon"></i>
-      </button>
+      <!-- Desktop theme toggle — same slider as in the drawer -->
+      <label class="theme-switch nav-theme-switch" title="Toggle light / dark mode">
+        <input type="checkbox" id="themeToggleDesktop" />
+        <span class="theme-slider"></span>
+      </label>
       <a class="btn btn-primary nav-resume-btn" href="https://drive.google.com/file/d/1NqYzF1vdeHLuPLycrkfRk_MD0aA5nr71/view?usp=drive_link" target="_blank" rel="noopener">
         <i class="fas fa-file-alt"></i> Resume
       </a>
@@ -63,13 +103,14 @@
     </div>
   </nav>
 
+
   <!-- ── Mobile Drawer ──────────────────────────────────── -->
   <div class="mobile-overlay" id="mobileOverlay"></div>
   <div class="mobile-drawer" id="mobileDrawer">
     <div class="drawer-header">
       <span class="nav-logo">❖ Surya M</span>
       <div class="drawer-header-right">
-        <!-- Theme toggle (converted from React) -->
+        <!-- Theme toggle in drawer (synced with nav toggle) -->
         <label class="theme-switch" title="Toggle light / dark mode">
           <input type="checkbox" id="themeToggle" />
           <span class="theme-slider"></span>
@@ -111,7 +152,7 @@
           <div class="hero-badges">
             <span class="badge"><i class="fas fa-map-marker-alt"></i> Tirupur, Tamil Nadu</span>
             <span class="badge"><i class="fas fa-graduation-cap"></i> B.Tech AI &amp; DS · 2026</span>
-            <span class="badge"><i class="fas fa-code"></i> 850+ Problems Solved</span>
+            <!-- <span class="badge"><i class="fas fa-code"></i> 850+ Problems Solved</span> -->
           </div>
           <div class="hero-cta">
             <a class="btn btn-primary" href="#projects"><i class="fas fa-rocket"></i> View Projects</a>

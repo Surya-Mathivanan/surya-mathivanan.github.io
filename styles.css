@@ -63,14 +63,20 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Subtle ambient background */
+/* 4-corner neon ambient glow */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(ellipse 70% 50% at 15% 10%, rgba(0, 212, 255, 0.04) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 40% at 85% 90%, rgba(168, 85, 247, 0.04) 0%, transparent 60%);
+    /* top-left  — neon cyan */
+    radial-gradient(ellipse 55% 45% at  0%   0%,  rgba(0, 212, 255, 0.13) 0%, transparent 60%),
+    /* top-right — neon emerald */
+    radial-gradient(ellipse 45% 38% at 100%  0%,  rgba(0, 255, 136, 0.09) 0%, transparent 55%),
+    /* bottom-right — neon purple */
+    radial-gradient(ellipse 55% 45% at 100% 100%, rgba(168, 85, 247, 0.13) 0%, transparent 60%),
+    /* bottom-left  — warm gold (accent) */
+    radial-gradient(ellipse 40% 35% at  0%  100%, rgba(200, 185, 154, 0.08) 0%, transparent 55%);
   pointer-events: none;
   z-index: 0;
 }
@@ -81,8 +87,8 @@ body::after {
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(0, 212, 255, 0.030) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 212, 255, 0.030) 1px, transparent 1px);
+    linear-gradient(rgba(0, 212, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.045) 1px, transparent 1px);
   background-size: 30px 30px;
   pointer-events: none;
   z-index: 0;
@@ -98,39 +104,211 @@ body::after {
 main { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 0 1.5rem; }
 
 /* ============================================================
-   PAGE LOADER
+   PAGE LOADER — Ghost pixel art (React → HTML conversion)
+   Neon palette: #00d4ff body · #a855f7 pupils · multi-stop gradient bg
    ============================================================ */
 .page-loader {
   position: fixed;
   inset: 0;
-  background: var(--bg);
+  /* Neon gradient that complements the dark portfolio theme */
+  background:
+    radial-gradient(ellipse 65% 55% at 50% 38%, rgba(0, 212, 255, 0.13) 0%, transparent 68%),
+    radial-gradient(ellipse 45% 45% at 12% 88%, rgba(168, 85, 247, 0.11) 0%, transparent 62%),
+    radial-gradient(ellipse 40% 40% at 88% 88%, rgba(0, 255, 136, 0.07) 0%, transparent 55%),
+    #050810;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.25rem;
+  gap: 2.5rem;
   z-index: 9999;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.6s ease;
 }
 .page-loader.hidden { opacity: 0; pointer-events: none; }
 
-.loader-ring {
-  width: 40px;
-  height: 40px;
-  border: 2px solid var(--border-neon);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+/* ── Ghost container ─────────────────────────────────────── */
+#ghost {
+  position: relative;
+  scale: 0.9;
+  /* Neon glow around the entire ghost */
+  filter:
+    drop-shadow(0 0 12px rgba(0, 212, 255, 0.70))
+    drop-shadow(0 0 32px rgba(0, 212, 255, 0.35))
+    drop-shadow(0 0 60px rgba(168, 85, 247, 0.20));
 }
-@keyframes spin { to { transform: rotate(360deg); } }
 
+/* ── Ghost body grid ─────────────────────────────────────── */
+#red {
+  animation: ghostBounce infinite 0.5s;
+  position: relative;
+  width: 140px;
+  height: 140px;
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  grid-template-rows: repeat(14, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  grid-template-areas:
+    "a1  a2  a3  a4  a5  top0 top0 top0 top0 a10 a11 a12 a13 a14"
+    "b1  b2  b3  top1 top1 top1 top1 top1 top1 top1 top1 b12 b13 b14"
+    "c1  c2  top2 top2 top2 top2 top2 top2 top2 top2 top2 top2 c13 c14"
+    "d1  top3 top3 top3 top3 top3 top3 top3 top3 top3 top3 top3 top3 d14"
+    "e1  top3 top3 top3 top3 top3 top3 top3 top3 top3 top3 top3 top3 e14"
+    "f1  top3 top3 top3 top3 top3 top3 top3 top3 top3 top3 top3 top3 f14"
+    "top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4"
+    "top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4"
+    "top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4"
+    "top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4"
+    "top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4"
+    "top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4"
+    "st0  st0  an4  st1  an7  st2  an10 an10 st3  an13 st4  an16 st5  st5"
+    "an1  an2  an3  an5  an6  an8  an9  an9  an11 an12 an14 an15 an17 an18";
+}
+
+@keyframes ghostBounce {
+  0%,  49% { transform: translateY(0px);   }
+  50%, 100% { transform: translateY(-10px); }
+}
+
+/* ── Solid ghost colour — neon blue ─── */
+#top0, #top1, #top2, #top3, #top4,
+#st0,  #st1,  #st2,  #st3,  #st4,  #st5 {
+  background-color: #00d4ff;
+}
+#top0 { grid-area: top0; }
+#top1 { grid-area: top1; }
+#top2 { grid-area: top2; }
+#top3 { grid-area: top3; }
+#top4 { grid-area: top4; }
+#st0  { grid-area: st0;  }
+#st1  { grid-area: st1;  }
+#st2  { grid-area: st2;  }
+#st3  { grid-area: st3;  }
+#st4  { grid-area: st4;  }
+#st5  { grid-area: st5;  }
+
+/* ── Animated tentacle segments ─────── */
+#an1  { grid-area: an1;  animation: ghostFlick0 infinite 0.5s; }
+#an18 { grid-area: an18; animation: ghostFlick0 infinite 0.5s; }
+#an2  { grid-area: an2;  animation: ghostFlick1 infinite 0.5s; }
+#an17 { grid-area: an17; animation: ghostFlick1 infinite 0.5s; }
+#an3  { grid-area: an3;  animation: ghostFlick1 infinite 0.5s; }
+#an16 { grid-area: an16; animation: ghostFlick1 infinite 0.5s; }
+#an4  { grid-area: an4;  animation: ghostFlick1 infinite 0.5s; }
+#an15 { grid-area: an15; animation: ghostFlick1 infinite 0.5s; }
+#an5  { grid-area: an5;  }   /* transparent spacer */
+#an6  { grid-area: an6;  animation: ghostFlick0 infinite 0.5s; }
+#an7  { grid-area: an7;  animation: ghostFlick0 infinite 0.5s; }
+#an8  { grid-area: an8;  animation: ghostFlick0 infinite 0.5s; }
+#an9  { grid-area: an9;  animation: ghostFlick1 infinite 0.5s; }
+#an10 { grid-area: an10; animation: ghostFlick1 infinite 0.5s; }
+#an11 { grid-area: an11; animation: ghostFlick0 infinite 0.5s; }
+#an12 { grid-area: an12; animation: ghostFlick0 infinite 0.5s; }
+#an13 { grid-area: an13; animation: ghostFlick0 infinite 0.5s; }
+#an14 { grid-area: an14; }   /* transparent spacer */
+#an15 { grid-area: an15; animation: ghostFlick1 infinite 0.5s; }
+
+@keyframes ghostFlick0 {
+  0%,  49% { background-color: #00d4ff; }
+  50%, 100% { background-color: transparent; }
+}
+@keyframes ghostFlick1 {
+  0%,  49% { background-color: transparent; }
+  50%, 100% { background-color: #00d4ff; }
+}
+
+/* ── Eyes ───────────────────────────── */
+#eye {
+  width: 40px; height: 50px;
+  position: absolute; top: 30px; left: 10px;
+}
+#eye::before {
+  content: ""; background-color: white;
+  width: 20px; height: 50px;
+  transform: translateX(10px);
+  display: block; position: absolute;
+}
+#eye::after {
+  content: ""; background-color: white;
+  width: 40px; height: 30px;
+  transform: translateY(10px);
+  display: block; position: absolute;
+}
+
+#eye1 {
+  width: 40px; height: 50px;
+  position: absolute; top: 30px; right: 30px;
+}
+#eye1::before {
+  content: ""; background-color: white;
+  width: 20px; height: 50px;
+  transform: translateX(10px);
+  display: block; position: absolute;
+}
+#eye1::after {
+  content: ""; background-color: white;
+  width: 40px; height: 30px;
+  transform: translateY(10px);
+  display: block; position: absolute;
+}
+
+/* ── Pupils — neon purple ────────────── */
+#pupil {
+  width: 20px; height: 20px;
+  background-color: #a855f7;
+  position: absolute; top: 50px; left: 10px;
+  z-index: 1;
+  animation: ghostEyes infinite 3s;
+}
+#pupil1 {
+  width: 20px; height: 20px;
+  background-color: #a855f7;
+  position: absolute; top: 50px; right: 50px;
+  z-index: 1;
+  animation: ghostEyes infinite 3s;
+}
+@keyframes ghostEyes {
+  0%,  49% { transform: translateX(0px);  }
+  50%, 99% { transform: translateX(10px); }
+  100%      { transform: translateX(0px); }
+}
+
+/* ── Shadow — neon blue tinted ─────── */
+#shadow {
+  background: radial-gradient(ellipse, rgba(0, 212, 255, 0.55) 0%, transparent 70%);
+  width: 140px; height: 140px;
+  position: absolute;
+  border-radius: 50%;
+  transform: rotateX(80deg);
+  filter: blur(16px);
+  top: 80%;
+  animation: ghostShadow infinite 0.5s;
+}
+@keyframes ghostShadow {
+  0%,  49% { opacity: 0.65; }
+  50%, 100% { opacity: 0.20; }
+}
+
+/* ── Loading text ───────────────────── */
 .loader-text {
   font-family: 'DM Mono', monospace;
   font-size: 12px;
-  color: var(--text2);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+  /* Gradient text matching ghost neon colours */
+  background: linear-gradient(90deg, #00d4ff 0%, #a855f7 50%, #00ff88 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: loaderTextShift 3s ease infinite;
+  background-size: 200% 100%;
 }
+@keyframes loaderTextShift {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
+
 
 /* ============================================================
    BACK TO TOP
@@ -1427,8 +1605,14 @@ footer {
 
 [data-theme="light"] body::before {
   background:
-    radial-gradient(ellipse 70% 50% at 15% 10%, rgba(0, 102, 187, 0.04) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 40% at 85% 90%, rgba(138, 115, 85, 0.04) 0%, transparent 60%);
+    /* top-left  — sky blue */
+    radial-gradient(ellipse 55% 45% at  0%   0%,  rgba(0, 102, 187, 0.09) 0%, transparent 60%),
+    /* top-right — teal */
+    radial-gradient(ellipse 45% 38% at 100%  0%,  rgba(0, 160, 120, 0.06) 0%, transparent 55%),
+    /* bottom-right — indigo */
+    radial-gradient(ellipse 55% 45% at 100% 100%, rgba(100, 70, 200, 0.08) 0%, transparent 60%),
+    /* bottom-left  — warm gold */
+    radial-gradient(ellipse 40% 35% at  0%  100%, rgba(138, 115, 85, 0.07) 0%, transparent 55%);
 }
 
 /* Grid lines shift to subtle dark in light mode */
@@ -1531,7 +1715,8 @@ footer {
   gap: 12px;
 }
 
-/* Hide theme icon btn on mobile (drawer toggle takes over) */
+/* On mobile: hide resume btn only — toggle stays visible in the nav bar */
 @media (max-width: 768px) {
-  .theme-icon-btn { display: none; }
+  .theme-icon-btn { display: none; }  /* legacy safety */
+  /* .nav-theme-switch stays visible on mobile — shown in nav next to hamburger */
 }

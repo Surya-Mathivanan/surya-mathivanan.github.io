@@ -344,11 +344,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const themeKey = 'portfolio-theme';
 
   function syncUI(theme) {
-    const isLight   = theme === 'light';
-    const icon      = document.getElementById('themeIcon');
-    const drawerChk = document.getElementById('themeToggle');
-    if (icon)      icon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
-    if (drawerChk) drawerChk.checked = isLight;
+    const isLight      = theme === 'light';
+    const desktopChk   = document.getElementById('themeToggleDesktop');
+    const drawerChk    = document.getElementById('themeToggle');
+    if (desktopChk) desktopChk.checked = isLight;
+    if (drawerChk)  drawerChk.checked  = isLight;
   }
 
   function applyTheme(theme) {
@@ -360,9 +360,9 @@ document.addEventListener('DOMContentLoaded', () => {
   /* Sync UI to whatever was applied early */
   syncUI(html.getAttribute('data-theme') || 'dark');
 
-  /* Desktop nav moon/sun button */
-  document.getElementById('themeIconBtn')?.addEventListener('click', () => {
-    applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  /* Desktop nav toggle */
+  document.getElementById('themeToggleDesktop')?.addEventListener('change', (e) => {
+    applyTheme(e.target.checked ? 'light' : 'dark');
   });
 
   /* Drawer toggle switch */
@@ -370,4 +370,5 @@ document.addEventListener('DOMContentLoaded', () => {
     applyTheme(e.target.checked ? 'light' : 'dark');
   });
 });
+
 
